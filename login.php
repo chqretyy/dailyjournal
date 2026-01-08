@@ -63,71 +63,72 @@ if(isset($_SESSION['username'])){
             </div>
         </div>
 
-        <?php
-        //set variable username dan password dummy
-        $username = "admin";
-        $password = "123456";
+        
+        <script>
+  document.getElementById("loginForm").addEventListener("submit", function(event) {
+      const user = document.getElementById("user").value.trim();
+      const pass = document.getElementById("pass").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
 
-        //check apakah ada request dengan method POST yang dilakukan
+      errorMsg.textContent = "";
+
+      if (user === "") {
+          errorMsg.textContent = "Username tidak boleh kosong!";
+          event.preventDefault(); 
+          return;
+      }
+
+      if (pass === "") {
+          errorMsg.textContent = "Password tidak boleh kosong!";
+          event.preventDefault(); 
+          return;
+      }
+  });
+</script>
+<?php
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // ambil nilai input 
     $userInput = $_POST['user'];
     $passInput = $_POST['pass'];
 
-    // --- VALIDASI EMPTY FIELD ---
     if ($userInput == "") {
         echo "Username tidak boleh kosong!";
-        exit; // hentikan proses
+        exit;
     }
 
     if ($passInput == "") {
         echo "Password tidak boleh kosong!";
-        exit; // hentikan proses
+        exit;
     }
 
-		//jika lolos semua validasi 
-    //tampilkan isi dari variable array POST menggunakan perulangan
-    foreach($_POST as $key => $val){
-        echo $key . " : " . $val . "<br>";
-    }
+    $username = $userInput;
+    $password = md5($passInput);
 
-    //jika lolos semua validasi 
-    //check apakah username dan password yang di POST sama dengan data dummy
-    if ($userInput == $username AND $passInput == $password) {
-        echo "Username dan Password Benar";
-    } else {
-        echo "Username dan Password Salah";
+    $stmt = $conn->prepare(" 
+    SELECT *FROM USER 
+    WHERE username=? AND password=?");
+
+    $stmt->bind_param("ss", $username, $password);
+
+    $stmt->bind_param("ss", $username,$password);
+
+    $stmt->execute();
+
+    $hasil = $stmt->get_result();
+
+    $row = $hasil->fetch_array(MYSQLI_ASSOC);
+
+    if (!empty($row)) {
+        $_SESSION['username'] = $username;
+        header("location:admin.php");
+    }else{
+        header('location:login.php');
     }
 }
-        ?>
 
-        <script>
-            document.getElementById("loginForm").addEventListener("submit", function(event) {
-                const user = document.getElementById("user").value.trim();
-                const pass = document.getElementById("pass").value.trim();
-                const errorMsg = document.getElementById("errorMsg");
 
-                // Reset pesan error
-                errorMsg.textContent = "";
-
-                // Cek username kosong
-                if (user === "") {
-                    errorMsg.textContent = "Username tidak boleh kosong!";
-                    event.preventDefault(); // stop submit (stop kirim data dari form ke server)
-                    return;
-                }
-
-                // Cek password kosong
-                if (pass === "") {
-                    errorMsg.textContent = "Password tidak boleh kosong!";
-                    event.preventDefault(); // stop submit (stop kirim data dari form ke server)
-                    return;
-                }
-
-                // Jika lolos semua validasi, form akan submit (kirim data dari form ke server)
-            });
-        </script>
+?>
         
         <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
