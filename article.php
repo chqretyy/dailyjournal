@@ -1,20 +1,24 @@
+<?php
+include "koneksi.php";
+?>
 <div class="container">
     <div class="row mb-2">
         <div class="col-md-6">
             <!-- Button tambah data -->
-            <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#ModalTambah">
-             <i class="bi bi-plus-lg"></i> Tambah Article
+            <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                <i class="bi bi-plus-lg"></i> Tambah Article
             </button>
         </div>
         <div class="col-md-6">
             <div class="input-group">
-                <input type="text" id="search" class="form-control" placeholder="Ketik minimal 3 karakter untuk pencarian...">
+                <input type="text" id="search" class="form-control" placeholder="Ketikan minimal 3 karakter untuk pencarian..">
                 <span class="input-group-text">
                     <i class="bi bi-search"></i>
                 </span>
             </div>
         </div>
     </div>
+    
     <div class="row">
         <div class="table-responsive">
             <table class="table table-hover">
@@ -25,10 +29,10 @@
                         <th class="w-50">Isi</th>
                         <th class="w-50">Gambar</th>
                         <th class="w-25">Aksi</th>
-                    </tr>   
+                    </tr>
                 </thead>
                 <tbody id="result">
-
+                    
                 </tbody>
             </table>
         </div>
@@ -37,13 +41,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalTambahLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Article</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" action="" enctype="multipart/form-data">
-                    <div class="modal-body">
+                <form method="post" action="" enctype="multipart/form-data">   
+                <div class="modal-body">
                         <div class="mb-3">
-							<label for="judul" class="form-label">Judul</label>
+    						<label for="judul" class="form-label">Judul</label>
                             <input type="text" class="form-control" name="judul" placeholder="Tuliskan Judul Artikel" required>
                         </div>
                         <div class="mb-3">
@@ -54,17 +58,17 @@
                             <label for="gambar" class="form-label">Gambar</label>
                             <input type="file" class="form-control" name="gambar">
                         </div>
-                    </div>
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <input type="submit" value="simpan" name="simpan" class="btn btn-primary">
                     </div>
-                    </form>
+                    </form> 
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
-</div>  
+</div>
 
 <script>
     function loadData(keyword = '') {
@@ -83,20 +87,19 @@
     // load awal
     loadData();
 
-    		// event pencarian
+    // event pencarian
     $("#search").on("keyup", function() {
         let keyword = $(this).val();
+        alert(keyword);
 
         if (keyword.length >= 3 || keyword.length === 0) {
-        loadData(keyword);
+            loadData(keyword);
         }
     });
 </script>
 
-
-
 <?php
-include "upload_photo.php";
+include "upload_foto.php";
 
 //jika tombol simpan diklik
 if (isset($_POST['simpan'])) {
@@ -109,9 +112,9 @@ if (isset($_POST['simpan'])) {
 
     //jika ada file baru yang dikirim  
     if ($nama_gambar != '') {
-        //panggil function upload_photo untuk cek detail file yg diupload user
+        //panggil function upload_foto untuk cek detail file yg diupload user
         //function ini memiliki keluaran sebuah array yang berisi status dan message
-        $cek_upload = upload_photo($_FILES["gambar"]);
+        $cek_upload = upload_foto($_FILES["gambar"]);
 
         //cek status upload file hasilnya true/false
         if ($cek_upload['status']) {
@@ -141,13 +144,13 @@ if (isset($_POST['simpan'])) {
         }
 
         $stmt = $conn->prepare("UPDATE article 
-                                SET 
-                                judul =?,
-                                isi =?,
-                                gambar = ?,
-                                tanggal = ?,
-                                username = ?
-                                WHERE id = ?");
+        SET 
+        judul =?,
+        isi =?,
+        gambar = ?,
+        tanggal = ?,
+        username = ?
+        WHERE id = ?");
 
         $stmt->bind_param("sssssi", $judul, $isi, $gambar, $tanggal, $username, $id);
         $simpan = $stmt->execute();
@@ -159,7 +162,6 @@ if (isset($_POST['simpan'])) {
         $stmt->bind_param("sssss", $judul, $isi, $gambar, $tanggal, $username);
         $simpan = $stmt->execute();
     }
-
     if ($simpan) {
         echo "<script>
             alert('Simpan data sukses');
@@ -175,7 +177,7 @@ if (isset($_POST['simpan'])) {
     $stmt->close();
     $conn->close();
 }
- 
+
 //jika tombol hapus diklik
 if (isset($_POST['hapus'])) {
     $id = $_POST['id'];
@@ -186,7 +188,7 @@ if (isset($_POST['hapus'])) {
         unlink("img/" . $gambar);
     }
 
-    $stmt = $conn->prepare("DELETE FROM articles WHERE id =?");
+    $stmt = $conn->prepare("DELETE FROM article WHERE id =?");
 
     $stmt->bind_param("i", $id);
     $hapus = $stmt->execute();
@@ -206,5 +208,5 @@ if (isset($_POST['hapus'])) {
     $stmt->close();
     $conn->close();
 }
-
-?>  
+ 
+?>

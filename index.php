@@ -1,12 +1,14 @@
-<?php include 'koneksi.php' ?>
-
+<?php
+//menyertakan code dari file koneksi
+include "koneksi.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>My Daily Journal</title>
-    <link rel="icon" href="img/logo.png" />
+    <title>Ice Cream House</title>
+    <link rel="icon" href="img/l0go.png" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
@@ -22,7 +24,7 @@
     <!-- nav begin -->
     <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top">
       <div class="container">
-        <a class="navbar-brand" href="#">My Daily Journal</a>
+        <a class="navbar-brand" href="#">Ice Cream House</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -64,7 +66,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-danger theme"
+              class="btn bg-primary-subtle theme"
               id="light"
               title="light"
             >
@@ -76,16 +78,16 @@
     </nav>
     <!-- nav end -->
     <!-- hero begin -->
-    <section id="hero" class="text-center p-5 bg-danger-subtle text-sm-start">
+    <section id="hero" class="text-center p-5 bg-info-subtle text-sm-start">
       <div class="container">
         <div class="d-sm-flex flex-sm-row-reverse align-items-center">
-          <img src="img/banner.jpg" class="img-fluid" width="300" />
+          <img src="img/banner1.png" class="img-fluid" width="400" />
           <div>
             <h1 class="fw-bold display-4">
-              Create Memories, Save Memories, Everyday
+              Your Favorite Ice Cream, Every Day
             </h1>
             <h4 class="lead display-6">
-              Mencatat semua kegiatan sehari-hari yang ada tanpa terkecuali
+              Es krim segar dengan berbagai rasa favorit, dibuat untuk menemani hari manismu.
             </h4>
             <h6>
               <span id="tanggal"></span>
@@ -98,53 +100,56 @@
     <!-- hero end -->
     <!-- article begin -->
     <section id="article" class="text-center p-5">
-            <div class="container">
-                <h1 class="fw-bold display-4 pb-3">Articles</h1>
-                <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
-                    <?php
-                        $sql = "SELECT * FROM articles ORDER BY tanggal DESC";
-                        $hasil = $conn->query($sql); 
-                        // print_r($hasil);
-                        while ($row = $hasil->fetch_assoc()){
-                    ?>
-                    <!-- Coll Begin -->
-                    <article class="col">
-                        <div class="card h-100">
-                            <img src="img <?= $row["gambar"] ?>" height="500" class="object-fit-cover d-block w-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $row["judul"] ?></h5>
-                                <p class="card-text"><?= $row["isi"] ?></p>
-                            </div>
-                            <div class="card-footer">
-                                <small class="text-body-secondary"><?= $row["tanggal"] ?></small>
-                            </div>
-                        </div>
-                    </article>
-                   <!-- Coll Begin End -->
-                    <?php 
-                        }
-                    ?>
-                </div>
+      <div class="container">
+        <h1 class="fw-bold display-4 pb-3">article</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        <?php
+        $sql = "SELECT * FROM article ORDER BY tanggal DESC";
+        $hasil = $conn->query($sql); 
+        while($row = $hasil->fetch_assoc()){
+        ?>
+        <!-- col begin -->
+          <div class="col">
+            <div class="card h-100">
+              <img src="img/<?= $row["gambar"]?>" class="card-img-top" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title"><?= $row["judul"]?></h5>
+                <p class="card-text">
+                  <?=$row["isi"]?>
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-body-secondary">
+                  <?=$row["tanggal"]?>
+                </small>
+              </div>
             </div>
-        </section>
+          </div>
+        <!-- coll end -->
+         <?php
+        }
+        ?>
+        </div>
+      </div>
+    </section>
     <!-- article end -->
     <!-- gallery begin -->
-    <section id="gallery" class="text-center p-5 bg-danger-subtle">
+    <section id="gallery" class="text-center p-5 bg-info-subtle">
       <div class="container">
         <h1 class="fw-bold display-4 pb-3">gallery</h1>
         <div id="carouselExample" class="carousel slide">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="img/abstract.avif" class="d-block w-100" alt="..." />
+              <img src="img/article1.png" class="d-block w-100" alt="..." />
             </div>
             <div class="carousel-item">
-              <img src="img/gal2.jpg" class="d-block w-100" alt="..." />
+              <img src="img/article2.png" class="d-block w-100" alt="..." />
             </div>
             <div class="carousel-item">
-              <img src="img/gal4.jpg" class="d-block w-100" alt="..." />
+              <img src="img/article3.png" class="d-block w-100" alt="..." />
             </div>
             <div class="carousel-item">
-              <img src="img/gal5.jpg" class="d-block w-100" alt="..." />
+              <img src="img/article6.png" class="d-block w-100" alt="..." />
             </div>
           </div>
           <button
@@ -176,74 +181,92 @@
         <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center">
           <div class="col">
             <div class="card h-100">
-              <div class="card-header bg-danger text-white">SENIN</div>
+              <div class="card-header bg-primary-subtle text-gray">SENIN</div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  Etika Profesi<br />16.20-18.00 | H.4.4
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
                 </li>
                 <li class="list-group-item">
-                  Sistem Operasi<br />18.30-21.00 | H.4.8
+                  Waktu Malam<br />18:00-01:00 | Jl. Gajah Mada
                 </li>
               </ul>
             </div>
           </div>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header bg-danger text-white">SELASA</div>
+              <div class="card-header bg-primary-subtle text-gray">SELASA</div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  Pendidikan Kewarganegaraan<br />12.30-13.10 | Kulino
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
                 </li>
                 <li class="list-group-item">
-                  Probabilitas dan Statistik<br />15.30-18.00 | H.4.9
-                </li>
-                <li class="list-group-item">
-                  Kecerdasan Buatan<br />18.30-21.00 | H.4.11
+                  Waktu Malam<br />18:00-01:00 | Jl. Gajah Mada
                 </li>
               </ul>
             </div>
           </div>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header bg-danger text-white">RABU</div>
+              <div class="card-header bg-primary-subtle text-gray">RABU</div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  Manajemen Proyek Teknologi Informasi<br />15.30-18.00 | H.4.6
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
+                </li>
+                <li class="list-group-item">
+                  Waktu Malam<br />18:00-01:00 | Jl. Gajah Mada
                 </li>
               </ul>
             </div>
           </div>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header bg-danger text-white">KAMIS</div>
+              <div class="card-header bg-primary-subtle text-gray">KAMIS</div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  Bahasa Indonesia<br />12.30-14.10 | Kulino
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
                 </li>
                 <li class="list-group-item">
-                  Pendidikan Agama Islam<br />16.20-18.00 | Kulino
-                </li>
-                <li class="list-group-item">
-                  Penambangan Data<br />18.30-21.00 | H.4.9
+                  Waktu Malam<br />18:00-03:00 | Jl. Gajah Mada
                 </li>
               </ul>
             </div>
           </div>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header bg-danger text-white">JUMAT</div>
+              <div class="card-header bg-primary-subtle text-gray">JUMAT</div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  Pemrograman Web Lanjut<br />10.20-12.00 | D.2.K
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
+                </li>
+                <li class="list-group-item">
+                  Waktu Malam<br />18:00-03:00 | Jl. Gajah Mada
                 </li>
               </ul>
             </div>
           </div>
           <div class="col">
             <div class="card h-100">
-              <div class="card-header bg-danger text-white">SABTU</div>
+              <div class="card-header bg-primary-subtle text-gray">SABTU</div>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item">FREE</li>
+                <li class="list-group-item">
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
+                </li>
+                <li class="list-group-item">
+                  Waktu Malam<br />18:00-03:00 | Jl. Gajah Mada
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-header bg-primary-subtle text-gray">Minggu</div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  Waktu Siang<br />09:00-18.00 | Jl. Gajah Mada
+                </li>
+                <li class="list-group-item">
+                  Waktu Malam<br />18:00-03:00 | Jl. Gajah Mada
+                </li>
               </ul>
             </div>
           </div>
@@ -252,19 +275,19 @@
     </section>
     <!-- schedule end -->
     <!-- about me begin -->
-    <section id="aboutme" class="text-center p-5 bg-danger-subtle">
+    <section id="aboutme" class="text-center p-5 bg-info-subtle">
       <div class="container">
         <div class="d-sm-flex align-items-center justify-content-center">
           <div class="p-3">
             <img
-              src="img/profil.png"
+              src="img/profil.jpeg"
               class="rounded-circle border shadow"
               width="300"
             />
           </div>
           <div class="p-md-5 text-sm-start">
-            <h3 class="lead">A11.2023.12345</h3>
-            <h1 class="fw-bold">Aprilyani Nur Safitri</h1>
+            <h3 class="lead">A11.2024.15774</h3>
+            <h1 class="fw-bold">M. KHAFIDZI</h1>
             Program Studi Teknik Informatika<br />
             <a href="https://dinus.ac.id/" class="fw-bold text-decoration-none"
               >Universitas Dian Nuswantoro</a
@@ -287,7 +310,7 @@
           ><i class="bi bi-whatsapp h2 p-2"></i
         ></a>
       </div>
-      <div>Aprilyani Nur Safitri &copy; 2023</div>
+      <div>M. KHAFIDZI &copy; 2025</div>
     </footer>
     <!-- footer end -->
 
@@ -321,21 +344,21 @@
 
         document
           .getElementById("hero")
-          .classList.remove("bg-danger-subtle", "text-black");
+          .classList.remove("bg-info-subtle", "text-black");
         document
           .getElementById("hero")
           .classList.add("bg-secondary", "text-white");
 
         document
           .getElementById("gallery")
-          .classList.remove("bg-danger-subtle", "text-black");
+          .classList.remove("bg-info-subtle", "text-black");
         document
           .getElementById("gallery")
           .classList.add("bg-secondary", "text-white");
 
         document
           .getElementById("aboutme")
-          .classList.remove("bg-danger-subtle", "text-black");
+          .classList.remove("bg-info-subtle", "text-black");
         document
           .getElementById("aboutme")
           .classList.add("bg-secondary", "text-white");
@@ -368,21 +391,21 @@
           .classList.remove("bg-secondary", "text-white");
         document
           .getElementById("hero")
-          .classList.add("bg-danger-subtle", "text-black");
+          .classList.add("bg-info-subtle", "text-black");
 
         document
           .getElementById("gallery")
           .classList.remove("bg-secondary", "text-white");
         document
           .getElementById("gallery")
-          .classList.add("bg-danger-subtle", "text-black");
+          .classList.add("bg-info-subtle", "text-black");
 
         document
           .getElementById("aboutme")
           .classList.remove("bg-secondary", "text-white");
         document
           .getElementById("aboutme")
-          .classList.add("bg-danger-subtle", "text-black");
+          .classList.add("bg-info-subtle", "text-black");
 
         document.getElementById("footer").classList.remove("text-white");
         document.getElementById("footer").classList.add("text-black");

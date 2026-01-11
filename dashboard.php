@@ -1,11 +1,11 @@
 <?php
+include "koneksi.php";
 //query untuk mengambil data article
-$sql1 = "SELECT * FROM articles ORDER BY tanggal DESC";
+$sql1 = "SELECT * FROM article ORDER BY tanggal DESC";
 $hasil1 = $conn->query($sql1);
 
 //menghitung jumlah baris data article
 $jumlah_article = $hasil1->num_rows; 
-
 ?>
 <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center pt-4">
     <div class="col">
